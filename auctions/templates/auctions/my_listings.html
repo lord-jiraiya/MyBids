@@ -12,7 +12,7 @@ My Listings
                 <img src="{{ item.image_url }}" height="250px" width="350px" >
                 <p> <a href="{% url 'product' item.id %}">{{  item.name }}</a>
                     <br>
-                    <span class="price"> <b> Starting Bid: $</b>{{ item.price }}</span>
+                    <span class="price"> <b> Current Bid: $</b>{{ item.hbid }}</span>
                     <br>
                     <span class="description"><b>{{ item.description }}</b></span>
                     <br>

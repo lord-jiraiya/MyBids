@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "auctions/layout.html" %}
 
-</body>
-</html>
+{% block title %}
+    Categories
+{% endblock %}
+
+{% block body %}
+    <h1 class="display-5">Available Categories</h1>
+<div style="margin-left: 60px">
+    <ul>
+        {% for  key in categories %}
+            <li><a style="text-decoration: none; font-size: x-large" href="{% url 'category_listing' key.category %}">{{ key.category }}</a> </li>
+        {% endfor %}
+
+    </ul>
+</div>
+{% endblock %}

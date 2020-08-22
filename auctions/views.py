@@ -15,10 +15,12 @@ def index(request):
         return render(request, "auctions/index.html", {
             "listings": AuctionList.objects.all(),
             "wishlist_count": wishlist_count,
-            "notifications_count": notifications_count
+            "notifications_count": notifications_count,
+            'type': "Active Listing"
         })
     return render(request, "auctions/index.html", {
         "listings": AuctionList.objects.all(),
+        'type': "Active Listings",
     })
 
 
@@ -179,9 +181,11 @@ def user_listings(request, username):
             'listings': prod,
             "wishlist_count": wishlist_count,
             "notifications_count": notifications_count,
+            "type": f"User: {username}"
         })
     return render(request,'auctions/index.html', {
         'listings':prod,
+        "type": f"User: {username}"
     })
 
 
@@ -197,7 +201,22 @@ def my_listings(request):
 
 
 def categories(request):
-    cat = AuctionList.objects.distinct(categories)
+    cat = AuctionList.objects.values('category').distinct()
+    if request.user.id:
+        notifications_count = Notifications.objects.filter(user=request.user).count()
+        wishlist_count = Wishlist.objects.filter(user=request.user).count()
+        return render(request,'auctions/categories.html', {
+            'categories':cat,
+            "wishlist_count": wishlist_count,
+            "notifications_count": notifications_count,
+
+        })
+    return render(request, 'auctions/categories.html',{
+        'categories': cat,
+
+    })
+
+
 
 
 @login_required(login_url='login')
@@ -221,8 +240,8 @@ def close_auction(request):
             message = f"Sorry! No One Placed Any Bid on {prod.name}. "
             new= Notifications.objects.create(user=request.user, msg=message)
         else:
-            message = f"Congratulations You are the highest Bidder for the product {prod.name}. Please pay  {user[0].bid} to {request.user.username}"
-            message2 = f"Congratulations Your Listed Product {prod.name} Got a New Master. Please Collect {user[0].bid} from {user[0].user.username}.\n" \
+            message = f"Congratulations You are the highest Bidder for the product \"{prod.name}\". Please pay  {user[0].bid} to {request.user.username}"
+            message2 = f"Congratulations Your Listed Product \"{prod.name}\" Got a New Master. Please Collect {user[0].bid} from {user[0].user.username}.\n" \
                        f"Thanking You for using MYBids."
             new = Notifications.objects.create(user=user[0].user, msg=message)
             new2 = Notifications.objects.create(user=request.user, msg=message2)
@@ -262,4 +281,23 @@ def place_bid(request):
         return render(request,'auctions/error.html',{
             'message': "an Error Encountered!!"
         })
+
+
+def category_listing(request,category):
+    if request.user.id:
+        notifications_count = Notifications.objects.filter(user=request.user).count()
+        wishlist_count = Wishlist.objects.filter(user=request.user).count()
+        return render(request, "auctions/index.html", {
+            "listings": AuctionList.objects.filter(category=category),
+            "wishlist_count": wishlist_count,
+            "notifications_count": notifications_count,
+            'type': f"Category: {category}"
+        })
+
+    return render(request, "auctions/index.html",{
+        'type': f"Category: {category}",
+        "listings": AuctionList.objects.filter(category=category)
+
+    })
+
 

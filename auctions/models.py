@@ -11,13 +11,20 @@ class AuctionList(models.Model):
     name = models.CharField(max_length=64)
     price = models.FloatField()
     description = models.CharField(max_length=400)
-    image_url = models.CharField(max_length=100)
+    image_url = models.CharField(max_length=1000)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="listings")
     date = models.DateTimeField()
     category = models.CharField(max_length=20, default='Not Specified')
 
     def __str__(self):
         return f"item {self.id}:{self.name} by {self.user.username}"
+
+    def hbid(self):
+        highest=self.item_bids.order_by("-bid")
+        if len(highest)==0:
+            return self.price
+        else:
+            return highest[0].bid
 
 
 class Comments(models.Model):
