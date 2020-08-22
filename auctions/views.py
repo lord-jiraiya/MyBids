@@ -193,10 +193,11 @@ def user_listings(request, username):
 def my_listings(request):
     notifications_count = Notifications.objects.filter(user=request.user).count()
     wishlist_count = Wishlist.objects.filter(user=request.user).count()
-    return render(request, "auctions/my_listings.html", {
-        'my_listings': AuctionList.objects.filter(user=request.user),
+    return render(request, "auctions/index.html", {
+        'listings': AuctionList.objects.filter(user=request.user),
         "wishlist_count": wishlist_count,
         "notifications_count": notifications_count,
+        "type": "My Listing"
     })
 
 
@@ -215,8 +216,6 @@ def categories(request):
         'categories': cat,
 
     })
-
-
 
 
 @login_required(login_url='login')
