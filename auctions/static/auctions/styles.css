@@ -1,0 +1,58 @@
+body {
+    padding: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.listing{
+     display: flex;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.list-item{
+    padding: 20px;
+    margin: 5px;
+    display: flex;
+    border: gray solid 0.5px;
+    height: 400px;
+     width:100%;
+}
+.list-item img {
+    padding-right: 5px;
+    width: 300px;
+}
+
+.list-item a{
+    text-decoration: None;
+    font-family: "Bahnschrift";
+    color: Black;
+    font-weight: bold;
+    font-size: 32px;
+}
+.description{
+    font-size: 15px;
+    color: gray(100);
+    font-family: "Corbel Light";
+}
+div.list-item {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
+}
+.prod-link{
+    text-decoration: None;
+}
+.image-large-container{
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 30px;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+.img-large{
+    height: 30px;
+    padding: 20px;
+}

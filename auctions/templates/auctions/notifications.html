@@ -1,0 +1,15 @@
+{% extends 'auctions/layout.html' %}
+
+{% block title %}
+My Notifications
+{% endblock %}
+
+{% block body %}
+{% for msg in notifications %}
+<div class="alert alert-info" role="alert">
+  {{ msg.msg }}
+</div>
+{% empty %}
+<h1 class="display-5">No New Notifications</h1>
+    {% endfor %}
+{% endblock %}

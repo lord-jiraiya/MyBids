@@ -1,0 +1,95 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+{{ prod.item }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="heading" style="margin-bottom: 20px ">
+        <h1 class="display-4">{{ prod.name }}</h1>
+    {% if request.user.is_authenticated %}
+
+        <form action="{% url 'wishlist' %}" method="post">
+        {% csrf_token %}
+        <input type="text" hidden value="{{ prod.id }}" name="prod">
+        <input type="text" hidden value="{{ request.path }}" name="url">
+            {% if wishlist %}
+                <input type="submit" class="btn btn-secondary" value="Un-Wish" name="wish">
+            {% else %}
+                <input type="submit" class="btn btn-secondary" value="Wish" name="wish">
+            {% endif %}
+        </form>
+    {% endif %}
+    </div>
+    <div class="prod-image-container">
+        <div class="image-large-container">
+        <img src="{{ prod.image_url }}"class="img-large" alt="Responsive image" height="400px" width=auto>
+        </div>
+    </div>
+
+    <div class="prod_description_large" style="margin-top: 20px; font-size: large" >
+        {{ prod.description}}
+        <br>
+    <br>
+    </div>
+
+        <div class="price">
+        {% if highest_bid %}
+            <h2 class="display-6"> Current Bid: ${{ highest_bid|add:-0.1 }}</h2>
+            {% else %}
+            <h2 class="display-6"> Current Bid: ${{ prod.price }}</h2>
+            {% endif %}
+
+
+
+    </div>
+    {% if owner %}
+    <form action="{% url 'close_auction' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+    <button type="submit" class="btn btn-danger" value="{{ prod.id }}" name="close_auction">Close Auction</button>
+    </div>
+    </form>
+    {% endif %}
+
+    <div class="place_bid" >
+        <form action="{% url 'place_bid' %}" method="post">
+            {% csrf_token %}
+            <input type="text" hidden value="{{ prod.id }}" name="prod">
+            <input type="text" hidden value="{{ request.path }}" name="url">
+            <div class="form-group">
+                <label for="bid">{{ prod.item_bids.all|length }} bid(s) so far. Your Bid is Current Bid</label>
+                <input type="Number" class="form-control" min="{{ highest_bid }}" step=0.1 id="bid" name="bid" placeholder="Place Bid">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+     <hr>
+    <h3 class="display-5">Details</h3>
+    <ul>
+        <li>Listed by: <a href="{% url 'user_listings' prod.user.username %}" style="text-decoration: none" >{{ prod.user.username }}</a></li>
+        <li>Category: {{ prod.category }}</li>
+        <li>Starting Bid: {{ prod.price }}</li>
+
+    </ul>
+    <hr>
+    <h2 class="display-5">Comment Section</h2>
+    {% for comment in comments %}
+        <div class="comment" style="margin-top: 8px; margin-left: 50px">
+        <i><b>{{comment.user}}: </b>{{ comment.comment }}</i>
+        </div>
+    {% endfor %}
+    <form action="{%  url 'comments' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group" style="margin-top: 30px">
+    <label for="comments">Leave a Comment</label>
+        <textarea  class="form-control" id="exampleInputTitle" name="comment" rows="3" style="width: 400px" placeholder="Any Thoughts"  required> </textarea>
+        <input type="text" hidden value="{{ request.path }}" name="url">
+        <input type="text" hidden value="{{ prod.id }}" name="prod_id">
+    </div>
+    <input type="submit" value="Post" class="btn btn-primary">
+
+    </form>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 xmlns="http://www.w3.org/1999/html">My Wishlist</h2>
+    {% if message %}
+    <div class="alert alert-info" role="alert">
+    {{ message }}
+    </div>
+    {% endif %}
+     <div class="listing">
+        {% for item in wishlist %}
+            <div class="list-item">
+                <div class="row">
+                    <div class="col-lg-5"><img class="img-fluid " src="{{ item.prod.image_url}}"></div>
+                    <div class="col-lg-7">
+                        <h1><a style="text-decoration: none; color: Black"  href="{% url 'product' item.prod.id %}">{{  item.prod.name }}</a></h1>
+                        <h3>Starting Bid: $ {{ item.prod.price }}</h3>
+                        <p>{{ item.prod.description }}</p>
+                        <blockquote class="blockquote">
+                            <p class="mb-0"></p>
+                            <footer class="blockquote-footer"><a href="{% url 'user_listings' item.prod.user %}">{{ item.prod.user }}</a>, {{ item.prod.date }}</footer>
+                    </blockquote>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

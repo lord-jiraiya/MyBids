@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+New Listing
+{% endblock %}
+
+{% block body %}
+    <p class="instructions">All * are Compulsory</p>
+<form action="{% url 'new_listing' %}" method="post">
+{% csrf_token %}
+  <div class="form-group">
+    <label for="exampleInputTitle">Product Name*</label>
+    <input type="text" class="form-control" id="exampleInputTitle" name="title" placeholder="Product Name" required>
+  </div>
+    <div class="form-group">
+    <label for="exampleInputPrice">Starting Bid*</label>
+    <input type="Number" class="form-control" id="exampleInputPrice" name="price" placeholder="Product Price" step=0.1 required>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputDescription">Product Description*</label>
+      <textarea class="form-control" id="exampleInputDescription" height="50px" name="description" placeholder="Product Description" required></textarea>
+  </div>
+
+  <div class="form-group">
+    <label for="exampleInputLink">Image Link</label>
+    <input type="text" class="form-control" id="exampleInputLink" name="img_url" placeholder="Image URL">
+  </div>
+
+    <div class="form-group">
+    <label for="InputCategory">Category</label>
+    <input type="text" class="form-control" id="InputCategory" name="category" placeholder="Specify Category" >
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}
+
